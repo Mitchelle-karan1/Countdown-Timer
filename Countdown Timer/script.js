@@ -103,11 +103,33 @@ function startCountdown() {
             clearInterval(countdown);
             display.textContent = "Time's up!";
             alarmSound.play();
+            navigator.vibrate(1000); // Vibrates for 1 second
         } else {
             timeLeft--;
             display.textContent = formatTime(timeLeft);
             updateProgressBar(totalTime, timeLeft);
+            updateProgressBar(totalTime, timeLeft);
+            updateTabTitle(timeLeft);
         }
-    }, 1000);
+    }
+, 1000);
 }
-
+document.getElementById('pauseBtn').addEventListener('click', () => {
+    isPaused = !isPaused;
+    document.getElementById('pauseBtn').textContent = isPaused ? "Resume" : "Pause";
+});
+document.getElementById('resetBtn').addEventListener('click', () => {
+    clearInterval(countdown);
+    timeLeft = 0;
+    display.textContent = "00:00";
+    updateProgressBar(1, 1);
+    document.getElementById('pauseBtn').textContent = "Pause"; 
+    isPaused = false;
+    document.title = "Countdown Timer"; // Reset title
+});
+document.getElementById('alarmSoundSelect').addEventListener('change', function() {
+    alarmSound.src = this.value;
+});
+function updateTabTitle(timeLeft) {
+    document.title = timeLeft > 0 ? `⏳ ${formatTime(timeLeft)} - Countdown Timer` : "⏰ Time's up!";
+}
