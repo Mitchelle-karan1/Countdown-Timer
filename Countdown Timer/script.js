@@ -69,5 +69,45 @@ countdown = setInterval(() => {
     } else {
         timeLeft--;
         display.textContent = formatTime(timeLeft);
+        updateProgressBar(totalTime, timeLeft);
     }
 }, 1000);
+
+document.getElementById('darkModeToggle').addEventListener('change', function() {
+    document.body.classList.toggle('dark-mode');
+});
+
+const progressBar = document.getElementById('progressBar');
+
+function updateProgressBar(totalTime, timeLeft) {
+    const progress = ((totalTime - timeLeft) / totalTime) * 100;
+    progressBar.value = progress;
+}
+function startCountdown() {
+    const minutes = parseInt(document.getElementById('minutesInput').value, 10) || 0;
+    const seconds = parseInt(document.getElementById('secondsInput').value, 10) || 0;
+    
+    timeLeft = minutes * 60 + seconds;
+    totalTime = timeLeft;
+    
+    if (timeLeft <= 0) {
+        alert('Please enter a valid time.');
+        return;
+    }
+
+    clearInterval(countdown);
+    updateProgressBar(totalTime, timeLeft);
+
+    countdown = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            display.textContent = "Time's up!";
+            alarmSound.play();
+        } else {
+            timeLeft--;
+            display.textContent = formatTime(timeLeft);
+            updateProgressBar(totalTime, timeLeft);
+        }
+    }, 1000);
+}
+
