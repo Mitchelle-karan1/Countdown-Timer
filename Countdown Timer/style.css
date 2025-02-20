@@ -1,26 +1,60 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #f4f4f4;
+    background-color: #121212; /* Dark mode background */
+    color: white;
 }
 
 #timer-container {
     width: 300px;
     margin: 100px auto;
     padding: 20px;
-    background: white;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background: #1e1e1e;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
     border-radius: 10px;
 }
 
 #display {
     font-size: 40px;
     margin: 20px 0;
+    font-weight: bold;
+}
+
+input {
+    padding: 10px;
+    font-size: 18px;
+    width: 80%;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
 }
 
 button {
     margin: 5px;
     padding: 10px 20px;
     font-size: 16px;
+    border: none;
     cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
 }
+
+#startBtn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#pauseBtn {
+    background-color: #FF9800;
+    color: white;
+}
+
+#resetBtn {
+    background-color: #F44336;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+

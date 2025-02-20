@@ -1,3 +1,5 @@
+const alarmSound = new Audio('alarm.mp3'); // Make sure to add an "alarm.mp3" file in the project
+
 let countdown;
 let timeLeft = 0;
 let isPaused = false;
@@ -58,3 +60,14 @@ function formatTime(seconds) {
 document.getElementById('startBtn').addEventListener('click', startCountdown);
 document.getElementById('pauseBtn').addEventListener('click', pauseCountdown);
 document.getElementById('resetBtn').addEventListener('click', resetCountdown);
+
+countdown = setInterval(() => {
+    if (timeLeft <= 0) {
+        clearInterval(countdown);
+        display.textContent = "Time's up!";
+        alarmSound.play();  // Play alarm sound
+    } else {
+        timeLeft--;
+        display.textContent = formatTime(timeLeft);
+    }
+}, 1000);
