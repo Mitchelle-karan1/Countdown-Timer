@@ -35,3 +35,18 @@ button:hover {
 #weatherResult {
     margin-top: 20px;
 }
+
+#loader {
+    font-size: 18px;
+    margin-top: 10px;
+    color: yellow;
+}
+.dark-mode {
+    background-color: #000;
+    color: #fff;
+}
+
+.dark-mode #weather-container {
+    background-color: #222;
+}
+

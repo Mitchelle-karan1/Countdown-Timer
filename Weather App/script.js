@@ -42,3 +42,10 @@ function updateWeatherUI(data) {
     windSpeed.textContent = `Wind Speed: ${data.wind.speed} m/s`;
     humidity.textContent = `Humidity: ${data.main.humidity}%`;
 }
+const darkModeToggle = document.getElementById("darkModeToggle");
+
+darkModeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+});
+
+
