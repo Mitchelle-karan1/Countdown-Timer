@@ -157,6 +157,120 @@ async function fetchWeatherByLocation(lat, lon) {
     }
 }
 
+const apiKey = "YOUR_API_KEY"; // Replace with your OpenWeather API key
+const searchButton = document.getElementById("searchButton");
+const cityInput = document.getElementById("cityInput");
+
+searchButton.addEventListener("click", () => {
+    const city = cityInput.value.trim();
+    if (city) {
+        fetchWeather(city);
+        fetchForecast(city);
+    } else {
+        alert("Please enter a valid city name.");
+    }
+});
+
+async function fetchWeather(city) {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+    try {
+        showLoading(true);
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error("City not found. Please try again.");
+        }
+
+        const data = await response.json();
+        updateWeatherUI(data);
+        fetchForecast(city); // Fetch forecast for the searched city
+    } catch (error) {
+        alert(error.message);
+    } finally {
+        showLoading(false);
+    }
+}
+
+async function fetchForecast(city) {
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error("Could not fetch forecast data.");
+        }
+
+        const data = await response.json();
+        updateForecastUI(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                fetchWeatherByLocation(lat, lon);
+            },
+            () => {
+                fetchWeather("Nairobi"); // Default city if user denies location access
+                fetchForecast("Nairobi");
+            }
+        );
+    } else {
+        fetchWeather("Nairobi");
+        fetchForecast("Nairobi");
+    }
+});
+
+async function fetchWeatherByLocation(lat, lon) {
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error("Location-based weather data not available.");
+        }
+
+        const data = await response.json();
+        updateWeatherUI(data);
+        fetchForecast(data.name); // Fetch forecast using the detected city name
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+function updateForecastUI(data) {
+    const forecastContainer = document.getElementById("forecastContainer");
+    forecastContainer.innerHTML = ""; // Clear previous forecast
+
+    const dailyForecasts = {};
+    
+    data.list.forEach((forecast) => {
+        const date = forecast.dt_txt.split(" ")[0]; // Extract date
+        if (!dailyForecasts[date]) {
+            dailyForecasts[date] = forecast;
+        }
+    });
+
+    Object.values(dailyForecasts).slice(0, 5).forEach((forecast) => { // Show 5 days
+        const forecastElement = document.createElement("div");
+        forecastElement.classList.add("forecast-item");
+
+        forecastElement.innerHTML = `
+            <p><strong>${forecast.dt_txt.split(" ")[0]}</strong></p>
+            <img src="https://openweathermap.org/img/wn/${forecast.weather[0].icon}.png">
+            <p>${forecast.weather[0].description}</p>
+            <p>${forecast.main.temp}°C</p>
+        `;
+        forecastContainer.appendChild(forecastElement);
+    });
+}
+
 
 
 
