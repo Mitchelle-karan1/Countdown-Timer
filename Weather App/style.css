@@ -77,5 +77,36 @@ button:hover {
     width: 120px;
 }
 
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.dark-mode #forecastContainer {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .forecast-item {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.weather-info {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+}
+
+.weather-info.show {
+    opacity: 1;
+}
+
+button {
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #444;
+    color: #fff;
+}
+
 
 

@@ -271,6 +271,71 @@ function updateForecastUI(data) {
     });
 }
 
+const darkModeToggle = document.getElementById("darkModeToggle");
+
+darkModeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    
+    if (document.body.classList.contains("dark-mode")) {
+        darkModeToggle.textContent = "☀️ Light Mode";
+        localStorage.setItem("darkMode", "enabled");
+    } else {
+        darkModeToggle.textContent = "🌙 Dark Mode";
+        localStorage.setItem("darkMode", "disabled");
+    }
+});
+
+// Load user's preference
+if (localStorage.getItem("darkMode") === "enabled") {
+    document.body.classList.add("dark-mode");
+    darkModeToggle.textContent = "☀️ Light Mode";
+}
+
+const saveCityButton = document.getElementById("saveCity");
+const savedCitiesDropdown = document.getElementById("savedCities");
+
+saveCityButton.addEventListener("click", () => {
+    const city = cityInput.value.trim();
+    if (!city) return alert("Enter a city first!");
+
+    let savedCities = JSON.parse(localStorage.getItem("savedCities")) || [];
+    if (!savedCities.includes(city)) {
+        savedCities.push(city);
+        localStorage.setItem("savedCities", JSON.stringify(savedCities));
+        updateSavedCities();
+    }
+});
+
+function updateSavedCities() {
+    savedCitiesDropdown.innerHTML = `<option value="">Select a saved city</option>`;
+    let savedCities = JSON.parse(localStorage.getItem("savedCities")) || [];
+    savedCities.forEach((city) => {
+        let option = document.createElement("option");
+        option.value = city;
+        option.textContent = city;
+        savedCitiesDropdown.appendChild(option);
+    });
+}
+
+savedCitiesDropdown.addEventListener("change", () => {
+    if (savedCitiesDropdown.value) {
+        fetchWeather(savedCitiesDropdown.value);
+        fetchForecast(savedCitiesDropdown.value);
+    }
+});
+
+// Load saved cities on page load
+updateSavedCities();
+
+function updateWeatherUI(data) {
+    const weatherInfo = document.querySelector(".weather-info");
+    weatherInfo.classList.remove("show");
+    setTimeout(() => {
+        // Update UI here...
+        weatherInfo.classList.add("show");
+    }, 300);
+}
+
 
 
 
