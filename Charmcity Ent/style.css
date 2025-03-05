@@ -45,3 +45,28 @@ body {
 .track:hover {
     background: #444;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    transition: background 0.3s, color 0.3s;
+}
+
+.dark-mode {
+    background: #121212;
+    color: white;
+}
+
+.player {
+    margin-top: 50px;
+}
+
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+#volume {
+    width: 100px;
+}

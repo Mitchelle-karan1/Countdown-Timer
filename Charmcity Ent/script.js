@@ -58,3 +58,30 @@ playlistItems.forEach((item, index) => {
 
 // Load first track
 loadTrack(currentTrack);
+
+const audio = document.getElementById("audio");
+const playPauseBtn = document.getElementById("playPause");
+const volumeControl = document.getElementById("volume");
+const darkModeBtn = document.getElementById("darkMode");
+const body = document.body;
+
+// 🎵 Toggle Play/Pause
+playPauseBtn.addEventListener("click", () => {
+    if (audio.paused) {
+        audio.play();
+        playPauseBtn.textContent = "⏸ Pause";
+    } else {
+        audio.pause();
+        playPauseBtn.textContent = "▶ Play";
+    }
+});
+
+// 🔊 Volume Control
+volumeControl.addEventListener("input", () => {
+    audio.volume = volumeControl.value;
+});
+
+// 🌙 Dark Mode Toggle
+darkModeBtn.addEventListener("click", () => {
+    body.classList.toggle("dark-mode");
+});
