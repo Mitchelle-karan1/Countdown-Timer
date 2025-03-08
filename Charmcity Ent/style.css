@@ -84,3 +84,15 @@ button {
 button:hover {
     background: #0056b3;
 }
+
+#progress {
+    width: 100%;
+    margin-top: 10px;
+}
+
+#visualizer {
+    width: 100%;
+    height: 80px;
+    background: black;
+    display: block;
+}

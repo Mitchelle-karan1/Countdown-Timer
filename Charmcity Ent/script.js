@@ -157,3 +157,38 @@ shuffleBtn.addEventListener("click", () => {
     audio.play();
     playPauseBtn.textContent = "⏸ Pause";
 });
+
+const progressBar = document.getElementById("progress");
+const visualizer = document.getElementById("visualizer");
+
+// 🎵 Update Progress Bar
+audio.addEventListener("timeupdate", () => {
+    progressBar.value = (audio.currentTime / audio.duration) * 100;
+});
+
+// 🎧 Seek to Different Parts of the Song
+progressBar.addEventListener("input", () => {
+    audio.currentTime = (progressBar.value / 100) * audio.duration;
+});
+
+// 🔥 Add Visualizer Animation
+const ctx = visualizer.getContext("2d");
+const analyser = new (window.AudioContext || window.webkitAudioContext)().createAnalyser();
+const source = new (window.AudioContext || window.webkitAudioContext)().createMediaElementSource(audio);
+source.connect(analyser);
+analyser.connect(new (window.AudioContext || window.webkitAudioContext)().destination);
+
+function animateVisualizer() {
+    requestAnimationFrame(animateVisualizer);
+    let dataArray = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(dataArray);
+    
+    ctx.clearRect(0, 0, visualizer.width, visualizer.height);
+    ctx.fillStyle = "lime";
+    
+    dataArray.forEach((value, i) => {
+        ctx.fillRect(i * 3, visualizer.height - value / 2, 2, value / 2);
+    });
+}
+
+animateVisualizer();
